@@ -8,8 +8,6 @@
 package tea
 
 import (
-	"bytes"
-	"encoding/binary"
 	"fmt"
 
 	"github.com/madlambda/crypt"
@@ -95,7 +93,8 @@ func cryptBlock(v0, v1 uint32, key []byte) (uint32, uint32) {
 		n     uint32 = 32
 	)
 
-	k0, k1, k2, k3 := decodeKey(key)
+	k0, k1 := decodeBlock(key[0:8])
+	k2, k3 := decodeBlock(key[8:16])
 
 	for n > 0 {
 		sum += delta
@@ -117,7 +116,8 @@ func decryptBlock(v0, v1 uint32, key []byte) (uint32, uint32) {
 		n     uint32 = 32
 	)
 
-	k0, k1, k2, k3 := decodeKey(key)
+	k0, k1 := decodeBlock(key[0:8])
+	k2, k3 := decodeBlock(key[8:16])
 
 	for n > 0 {
 		z -= ((y << 4) + uint32(k2)) ^ (y + sum) ^ ((y >> 5) + uint32(k3))
@@ -128,12 +128,4 @@ func decryptBlock(v0, v1 uint32, key []byte) (uint32, uint32) {
 	}
 
 	return y, z
-}
-
-func decodeKey(key []byte) (k0, k1, k2, k3 int32) {
-	binary.Read(bytes.NewBuffer(key[0:4]), binary.BigEndian, &k0)
-	binary.Read(bytes.NewBuffer(key[4:8]), binary.BigEndian, &k1)
-	binary.Read(bytes.NewBuffer(key[8:12]), binary.BigEndian, &k2)
-	binary.Read(bytes.NewBuffer(key[12:16]), binary.BigEndian, &k3)
-	return
 }
