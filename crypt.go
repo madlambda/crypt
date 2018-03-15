@@ -1,7 +1,7 @@
 package crypt
 
 // Cipher is a transform operation on src based on key
-type Cipher func(src []byte, key []byte) ([]byte, error)
+type Cipher func(src, key []byte) ([]byte, error)
 
 // Pad data to blocksize
 func Pad(data []byte, blocksz int) []byte {
