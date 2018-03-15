@@ -43,12 +43,12 @@ func DecryptFile(srcFile, dstFile string, key []byte, dec Decrypter) error {
 
 	decrypted, err := dec(src, key)
 	if err != nil {
-		return fmt.Errorf("EncryptFile: %s", err)
+		return fmt.Errorf("DecryptFile: %s", err)
 	}
 
 	err = ioutil.WriteFile(dstFile, decrypted, 0644)
 	if err != nil {
-		return fmt.Errorf("EncryptFile: %s", err)
+		return fmt.Errorf("DecryptFile: %s", err)
 	}
 	return nil
 }
