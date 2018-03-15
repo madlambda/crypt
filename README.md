@@ -1,0 +1,3 @@
+# crypt
+
+DO NOT USE FOR SERIOUS STUFF!
